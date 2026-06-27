@@ -104,6 +104,13 @@ model User {
   capstoneProject        CapstoneProject?       @relation("InternCapstone")
   mentoredCapstones      CapstoneProject[]      @relation("CapstoneMentor")
 
+  peerReviewsGiven       PeerReview[]           @relation("PeerReviewer")
+  peerReviewsReceived    PeerReview[]           @relation("PeerReviewee")
+  weeklyReports          WeeklyReport[]         @relation("InternWeeklyReports")
+  mentorWeeklyReports    WeeklyReport[]         @relation("MentorWeeklyReports")
+  evaluationsReceived    MentorEvaluation[]     @relation("InternEvaluations")
+  evaluationsGiven       MentorEvaluation[]     @relation("MentorEvaluations")
+
   @@map("users")
 }
 
@@ -406,6 +413,7 @@ model Assignment {
   module          Module?  @relation(fields: [moduleId], references: [id])
   creator         User     @relation("AssignmentCreator", fields: [createdBy], references: [id])
   submissions     Submission[]
+  peerReviews     PeerReview[]
 
   @@map("assignments")
 }
@@ -636,6 +644,72 @@ model CapstoneProject {
 
   @@unique([internId])
   @@map("capstone_projects")
+}
+
+// ─── Progress & Evaluation ──────────────────────────
+
+enum PeerReviewStatus {
+  PENDING
+  COMPLETED
+}
+
+model PeerReview {
+  id            String           @id @default(uuid())
+  reviewerId    String           @map("reviewer_id")
+  revieweeId    String           @map("reviewee_id")
+  assignmentId  String?          @map("assignment_id")
+  weekNumber    Int              @map("week_number")
+  scoresJson    Json?            @map("scores_json")
+  strengths     String?
+  improvements  String?
+  status        PeerReviewStatus @default(PENDING)
+  createdAt     DateTime         @default(now()) @map("created_at")
+  updatedAt     DateTime         @updatedAt @map("updated_at")
+
+  reviewer      User             @relation("PeerReviewer", fields: [reviewerId], references: [id])
+  reviewee      User             @relation("PeerReviewee", fields: [revieweeId], references: [id])
+  assignment    Assignment?      @relation(fields: [assignmentId], references: [id])
+
+  @@unique([reviewerId, revieweeId, weekNumber])
+  @@map("peer_reviews")
+}
+
+model WeeklyReport {
+  id              String   @id @default(uuid())
+  internId        String   @map("intern_id")
+  mentorId        String?  @map("mentor_id")
+  weekNumber      Int      @map("week_number")
+  summaryJson     Json     @map("summary_json")
+  mentorComments  String?  @map("mentor_comments")
+  overallScore    Float?   @map("overall_score")
+  createdAt       DateTime @default(now()) @map("created_at")
+  updatedAt       DateTime @updatedAt @map("updated_at")
+
+  intern          User     @relation("InternWeeklyReports", fields: [internId], references: [id])
+  mentor          User?    @relation("MentorWeeklyReports", fields: [mentorId], references: [id])
+
+  @@unique([internId, weekNumber])
+  @@map("weekly_reports")
+}
+
+model MentorEvaluation {
+  id              String   @id @default(uuid())
+  internId        String   @map("intern_id")
+  mentorId        String   @map("mentor_id")
+  weekNumber      Int      @map("week_number")
+  technicalScore  Float    @map("technical_score")
+  softSkillScore  Float    @map("soft_skill_score")
+  attendanceScore Float    @map("attendance_score")
+  overallScore    Float    @map("overall_score")
+  feedback        String?
+  areasOfImprovement String? @map("areas_of_improvement")
+  createdAt       DateTime @default(now()) @map("created_at")
+
+  intern          User     @relation("InternEvaluations", fields: [internId], references: [id])
+  mentor          User     @relation("MentorEvaluations", fields: [mentorId], references: [id])
+
+  @@unique([internId, mentorId, weekNumber])
+  @@map("mentor_evaluations")
 }
 
 // ─── Notifications ───────────────────────────────────

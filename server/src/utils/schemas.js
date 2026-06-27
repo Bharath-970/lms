@@ -289,6 +289,35 @@ const executeCodeSchema = z.object({
   code: z.string().min(1, 'Code required'),
 });
 
+const createPeerReviewSchema = z.object({
+  revieweeId: z.string().min(1, 'Reviewee required'),
+  assignmentId: z.string().min(1).optional(),
+  weekNumber: z.number().int().min(1),
+  scoresJson: z.any().optional(),
+  strengths: z.string().optional(),
+  improvements: z.string().optional(),
+});
+
+const generateReportSchema = z.object({
+  internId: z.string().min(1).optional(),
+  weekNumber: z.number().int().min(1),
+});
+
+const mentorCommentSchema = z.object({
+  mentorComments: z.string().min(1, 'Comment required'),
+  overallScore: z.number().min(0).max(100).optional(),
+});
+
+const createEvaluationSchema = z.object({
+  internId: z.string().min(1, 'Intern required'),
+  weekNumber: z.number().int().min(1),
+  technicalScore: z.number().min(0).max(10),
+  softSkillScore: z.number().min(0).max(10),
+  attendanceScore: z.number().min(0).max(10),
+  feedback: z.string().optional(),
+  areasOfImprovement: z.string().optional(),
+});
+
 module.exports = {
   loginSchema,
   changePasswordSchema,
@@ -326,4 +355,8 @@ module.exports = {
   createCapstoneSchema,
   updateCapstoneSchema,
   evaluateCapstoneSchema,
+  createPeerReviewSchema,
+  generateReportSchema,
+  mentorCommentSchema,
+  createEvaluationSchema,
 };

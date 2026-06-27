@@ -284,6 +284,80 @@ export interface CapstoneProject {
   mentor?: { id: string; name: string };
 }
 
+export type PeerReviewStatus = 'PENDING' | 'COMPLETED';
+
+export interface PeerReview {
+  id: string;
+  reviewerId: string;
+  revieweeId: string;
+  assignmentId: string | null;
+  weekNumber: number;
+  scoresJson: unknown;
+  strengths: string | null;
+  improvements: string | null;
+  status: PeerReviewStatus;
+  createdAt: string;
+  reviewer?: { id: string; name: string };
+  reviewee?: { id: string; name: string };
+  assignment?: { id: string; title: string };
+}
+
+export interface WeeklyReport {
+  id: string;
+  internId: string;
+  mentorId: string | null;
+  weekNumber: number;
+  summaryJson: {
+    attendanceDays: number;
+    presentDays: number;
+    standupCount: number;
+    totalTasks: number;
+    completedTasks: number;
+    submissionCount: number;
+    avgGrade: number;
+    quizAttempts: number;
+    commitCount: number;
+    totalAdditions: number;
+    totalDeletions: number;
+  };
+  mentorComments: string | null;
+  overallScore: number | null;
+  createdAt: string;
+  intern?: { id: string; name: string; email: string };
+  mentor?: { id: string; name: string };
+}
+
+export interface MentorEvaluation {
+  id: string;
+  internId: string;
+  mentorId: string;
+  weekNumber: number;
+  technicalScore: number;
+  softSkillScore: number;
+  attendanceScore: number;
+  overallScore: number;
+  feedback: string | null;
+  areasOfImprovement: string | null;
+  createdAt: string;
+  intern?: { id: string; name: string; email: string };
+  mentor?: { id: string; name: string };
+}
+
+export interface ProgressStats {
+  attendanceRate: number;
+  totalDays: number;
+  presentDays: number;
+  taskCompletionRate: number;
+  totalTasks: number;
+  completedTasks: number;
+  avgGrade: number;
+  totalSubmissions: number;
+  gradedSubmissions: number;
+  quizzesTaken: number;
+  commitCount: number;
+  capstonePhase: CapstonePhase | null;
+}
+
 export interface ApiResponse<T> {
   success: boolean;
   data: T;

@@ -23,6 +23,7 @@ import {
   Briefcase,
   Trophy,
   Rocket,
+  TrendingUp,
 } from 'lucide-react';
 
 const menuItems = {
@@ -41,6 +42,7 @@ const menuItems = {
     { href: '/portfolio', label: 'Portfolio', icon: Briefcase },
     { href: '/hackathons', label: 'Hackathons', icon: Trophy },
     { href: '/capstone', label: 'Capstone', icon: Rocket },
+    { href: '/progress', label: 'Progress', icon: TrendingUp },
     { href: '/calendar', label: 'Calendar', icon: Calendar },
     { href: '/access', label: 'Access Control', icon: Lock },
     { href: '/discord', label: 'Discord', icon: MessageCircle },
@@ -59,6 +61,7 @@ const menuItems = {
     { href: '/portfolio', label: 'Portfolio', icon: Briefcase },
     { href: '/hackathons', label: 'Hackathons', icon: Trophy },
     { href: '/capstone', label: 'Capstone', icon: Rocket },
+    { href: '/progress', label: 'Progress', icon: TrendingUp },
     { href: '/calendar', label: 'Calendar', icon: Calendar },
     { href: '/access', label: 'Access Control', icon: Lock },
     { href: '/discord', label: 'Discord', icon: MessageCircle },
@@ -76,6 +79,7 @@ const menuItems = {
     { href: '/portfolio', label: 'Portfolio', icon: Briefcase },
     { href: '/hackathons', label: 'Hackathons', icon: Trophy },
     { href: '/capstone', label: 'Capstone', icon: Rocket },
+    { href: '/progress', label: 'Progress', icon: TrendingUp },
     { href: '/calendar', label: 'Calendar', icon: Calendar },
     { href: '/discord', label: 'Discord', icon: MessageCircle },
   ],
