@@ -404,6 +404,17 @@ export interface StreakData {
   lastActivityAt: string;
 }
 
+export interface Notification {
+  id: string;
+  userId: string;
+  type: string;
+  title: string;
+  message: string;
+  read: boolean;
+  link: string | null;
+  createdAt: string;
+}
+
 export interface ApiResponse<T> {
   success: boolean;
   data: T;
