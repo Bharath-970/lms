@@ -11,6 +11,9 @@ const courseRoutes = require('./routes/courseRoutes');
 const moduleRoutes = require('./routes/moduleRoutes');
 const lessonRoutes = require('./routes/lessonRoutes');
 const accessRoutes = require('./routes/accessRoutes');
+const attendanceRoutes = require('./routes/attendanceRoutes');
+const standupRoutes = require('./routes/standupRoutes');
+const dailyTaskRoutes = require('./routes/dailyTaskRoutes');
 
 const app = express();
 const PORT = process.env.PORT || 5000;
@@ -44,6 +47,9 @@ app.use('/api/courses', courseRoutes);
 app.use('/api/modules', moduleRoutes);
 app.use('/api/lessons', lessonRoutes);
 app.use('/api/access', accessRoutes);
+app.use('/api/attendance', attendanceRoutes);
+app.use('/api/standups', standupRoutes);
+app.use('/api/daily-tasks', dailyTaskRoutes);
 
 app.get('/api/health', (req, res) => {
   res.json({ status: 'ok', timestamp: new Date().toISOString() });

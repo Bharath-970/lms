@@ -68,6 +68,47 @@ export interface InternAccess {
   unlockedAt: string | null;
 }
 
+export type AttendanceStatus = 'PRESENT' | 'LATE' | 'INCOMPLETE' | 'ABSENT' | 'EXCUSED';
+export type DailyTaskStatus = 'PENDING' | 'IN_PROGRESS' | 'COMPLETED';
+
+export interface Attendance {
+  id: string;
+  internId: string;
+  date: string;
+  markedAt: string | null;
+  status: AttendanceStatus;
+  overrideBy: string | null;
+  overrideReason: string | null;
+  tasksCompletedCount: number;
+  tasksTotalCount: number;
+  intern?: { id: string; name: string; email: string };
+}
+
+export interface DailyStandup {
+  id: string;
+  internId: string;
+  date: string;
+  yesterday: string;
+  today: string;
+  blockers: string | null;
+  createdAt: string;
+  intern?: { id: string; name: string; email: string };
+}
+
+export interface DailyTask {
+  id: string;
+  internId: string;
+  date: string;
+  title: string;
+  description: string | null;
+  assignedBy: string;
+  dueTime: string | null;
+  status: DailyTaskStatus;
+  completedAt: string | null;
+  createdAt: string;
+  assigner?: { id: string; name: string };
+}
+
 export interface ApiResponse<T> {
   success: boolean;
   data: T;

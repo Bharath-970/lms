@@ -11,6 +11,11 @@ import {
   FolderOpen,
   LogOut,
   GraduationCap,
+  ClipboardCheck,
+  MessageSquare,
+  CheckSquare,
+  Calendar,
+  MessageCircle,
 } from 'lucide-react';
 
 const menuItems = {
@@ -19,17 +24,32 @@ const menuItems = {
     { href: '/users', label: 'Users', icon: Users },
     { href: '/batches', label: 'Batches', icon: FolderOpen },
     { href: '/curriculum', label: 'Curriculum', icon: BookOpen },
+    { href: '/attendance', label: 'Attendance', icon: ClipboardCheck },
+    { href: '/standups', label: 'Standups', icon: MessageSquare },
+    { href: '/tasks', label: 'Daily Tasks', icon: CheckSquare },
+    { href: '/calendar', label: 'Calendar', icon: Calendar },
     { href: '/access', label: 'Access Control', icon: Lock },
+    { href: '/discord', label: 'Discord', icon: MessageCircle },
   ],
   MENTOR: [
     { href: '/dashboard', label: 'Dashboard', icon: LayoutDashboard },
     { href: '/users', label: 'My Interns', icon: Users },
     { href: '/curriculum', label: 'Curriculum', icon: BookOpen },
+    { href: '/attendance', label: 'Attendance', icon: ClipboardCheck },
+    { href: '/standups', label: 'Standups', icon: MessageSquare },
+    { href: '/tasks', label: 'Daily Tasks', icon: CheckSquare },
+    { href: '/calendar', label: 'Calendar', icon: Calendar },
     { href: '/access', label: 'Access Control', icon: Lock },
+    { href: '/discord', label: 'Discord', icon: MessageCircle },
   ],
   INTERN: [
     { href: '/dashboard', label: 'Dashboard', icon: LayoutDashboard },
     { href: '/curriculum', label: 'My Courses', icon: BookOpen },
+    { href: '/attendance', label: 'Attendance', icon: ClipboardCheck },
+    { href: '/standups', label: 'Standup', icon: MessageSquare },
+    { href: '/tasks', label: 'My Tasks', icon: CheckSquare },
+    { href: '/calendar', label: 'Calendar', icon: Calendar },
+    { href: '/discord', label: 'Discord', icon: MessageCircle },
   ],
 };
 

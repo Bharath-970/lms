@@ -81,6 +81,12 @@ model User {
   setupCompletions   SetupCompletion[]
   createdChecklists  SetupChecklist[] @relation("ChecklistCreator")
 
+  attendance         Attendance[]   @relation("InternAttendance")
+  attendanceOverrides Attendance[]  @relation("AttendanceOverride")
+  standups           DailyStandup[] @relation("InternStandups")
+  dailyTasks         DailyTask[]    @relation("InternDailyTasks")
+  assignedDailyTasks DailyTask[]    @relation("AssignedDailyTasks")
+
   @@map("users")
 }
 
@@ -281,6 +287,75 @@ model SetupCompletion {
 
   @@unique([internId, checklistId])
   @@map("setup_completions")
+}
+
+// ─── Daily Workflow ──────────────────────────────────
+
+enum AttendanceStatus {
+  PRESENT
+  LATE
+  INCOMPLETE
+  ABSENT
+  EXCUSED
+}
+
+enum DailyTaskStatus {
+  PENDING
+  IN_PROGRESS
+  COMPLETED
+}
+
+model Attendance {
+  id                  String           @id @default(uuid())
+  internId            String           @map("intern_id")
+  date                DateTime         @db.Date
+  markedAt            DateTime?        @map("marked_at")
+  status              AttendanceStatus @default(ABSENT)
+  overrideBy          String?          @map("override_by")
+  overrideReason      String?          @map("override_reason")
+  tasksCompletedCount Int              @default(0) @map("tasks_completed_count")
+  tasksTotalCount     Int              @default(0) @map("tasks_total_count")
+
+  intern              User             @relation("InternAttendance", fields: [internId], references: [id])
+  overriddenBy        User?            @relation("AttendanceOverride", fields: [overrideBy], references: [id])
+
+  @@unique([internId, date])
+  @@map("attendance")
+}
+
+model DailyStandup {
+  id        String   @id @default(uuid())
+  internId  String   @map("intern_id")
+  date      DateTime @db.Date
+  yesterday String
+  today     String
+  blockers  String?
+  createdAt DateTime @default(now()) @map("created_at")
+  updatedAt DateTime @updatedAt @map("updated_at")
+
+  intern    User     @relation("InternStandups", fields: [internId], references: [id])
+
+  @@unique([internId, date])
+  @@map("daily_standups")
+}
+
+model DailyTask {
+  id          String          @id @default(uuid())
+  internId    String          @map("intern_id")
+  date        DateTime        @db.Date
+  title       String
+  description String?
+  assignedBy  String          @map("assigned_by")
+  dueTime     DateTime?       @map("due_time")
+  status      DailyTaskStatus @default(PENDING)
+  completedAt DateTime?       @map("completed_at")
+  createdAt   DateTime        @default(now()) @map("created_at")
+  updatedAt   DateTime        @updatedAt @map("updated_at")
+
+  intern      User            @relation("InternDailyTasks", fields: [internId], references: [id])
+  assigner    User            @relation("AssignedDailyTasks", fields: [assignedBy], references: [id])
+
+  @@map("daily_tasks")
 }
 
 // ─── Notifications ───────────────────────────────────

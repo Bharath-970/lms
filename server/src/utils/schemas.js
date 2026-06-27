@@ -108,6 +108,30 @@ const bulkToggleAccessSchema = z.object({
   locked: z.boolean(),
 });
 
+const overrideAttendanceSchema = z.object({
+  internId: z.string().min(1),
+  date: z.string().min(1),
+  status: z.enum(['PRESENT', 'LATE', 'INCOMPLETE', 'ABSENT', 'EXCUSED']),
+  reason: z.string().min(1, 'Reason required'),
+});
+
+const submitStandupSchema = z.object({
+  yesterday: z.string().min(1, 'Yesterday field required'),
+  today: z.string().min(1, 'Today field required'),
+  blockers: z.string().optional(),
+});
+
+const createDailyTaskSchema = z.object({
+  internId: z.string().min(1),
+  title: z.string().min(1, 'Title required'),
+  description: z.string().optional(),
+  dueTime: z.string().optional(),
+});
+
+const updateTaskStatusSchema = z.object({
+  status: z.enum(['PENDING', 'IN_PROGRESS', 'COMPLETED']),
+});
+
 module.exports = {
   loginSchema,
   changePasswordSchema,
@@ -123,4 +147,8 @@ module.exports = {
   updateLessonSchema,
   toggleAccessSchema,
   bulkToggleAccessSchema,
+  overrideAttendanceSchema,
+  submitStandupSchema,
+  createDailyTaskSchema,
+  updateTaskStatusSchema,
 };
