@@ -109,6 +109,49 @@ export interface DailyTask {
   assigner?: { id: string; name: string };
 }
 
+export type SubmissionStatus = 'SUBMITTED' | 'GRADED' | 'RESUBMIT_REQUESTED';
+
+export interface RubricItem {
+  criteria: string;
+  points: number;
+}
+
+export interface Assignment {
+  id: string;
+  moduleId: string | null;
+  title: string;
+  description: string;
+  rubricJson: RubricItem[] | null;
+  maxScore: number;
+  deadline: string;
+  fileTypes: string | null;
+  maxFileSize: number;
+  allowResubmit: boolean;
+  maxResubmits: number;
+  isMiniProject: boolean;
+  createdBy: string;
+  createdAt: string;
+  module?: { id: string; title: string; course?: { title: string; weekNumber: number } };
+  submissions?: Submission[];
+  _count?: { submissions: number };
+}
+
+export interface Submission {
+  id: string;
+  assignmentId: string;
+  internId: string;
+  fileUrl: string | null;
+  content: string | null;
+  status: SubmissionStatus;
+  grade: number | null;
+  feedback: string | null;
+  gradedBy: string | null;
+  gradedAt: string | null;
+  resubmitCount: number;
+  submittedAt: string;
+  intern?: { id: string; name: string; email: string };
+}
+
 export interface ApiResponse<T> {
   success: boolean;
   data: T;

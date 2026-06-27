@@ -123,7 +123,7 @@ export default function AttendancePage() {
               <p className="text-sm text-gray-500">
                 {canMark
                   ? 'Attendance window is open (9:30 AM - 11:00 AM)'
-                  : mins < 570
+                  : istMins < 570
                     ? 'Attendance window opens at 9:30 AM'
                     : 'Attendance window closed'}
               </p>

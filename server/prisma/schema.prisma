@@ -87,6 +87,10 @@ model User {
   dailyTasks         DailyTask[]    @relation("InternDailyTasks")
   assignedDailyTasks DailyTask[]    @relation("AssignedDailyTasks")
 
+  createdAssignments Assignment[]   @relation("AssignmentCreator")
+  submissions        Submission[]   @relation("InternSubmissions")
+  gradedSubmissions  Submission[]   @relation("SubmissionGrader")
+
   @@map("users")
 }
 
@@ -166,6 +170,7 @@ model Module {
   lessons             Lesson[]
   resources           Resource[]
   datasets            Dataset[]
+  assignments         Assignment[]
   creator             User     @relation("ModuleCreator", fields: [createdBy], references: [id])
 
   @@map("modules")
@@ -356,6 +361,60 @@ model DailyTask {
   assigner    User            @relation("AssignedDailyTasks", fields: [assignedBy], references: [id])
 
   @@map("daily_tasks")
+}
+
+// ─── Assignments ─────────────────────────────────────
+
+enum SubmissionStatus {
+  SUBMITTED
+  GRADED
+  RESUBMIT_REQUESTED
+}
+
+model Assignment {
+  id              String   @id @default(uuid())
+  moduleId        String?  @map("module_id")
+  title           String
+  description     String
+  rubricJson      Json?    @map("rubric_json")
+  maxScore        Int      @map("max_score")
+  deadline        DateTime
+  fileTypes       String?  @map("file_types")
+  maxFileSize     Int      @default(52428800) @map("max_file_size")
+  allowResubmit   Boolean  @default(false) @map("allow_resubmit")
+  maxResubmits    Int      @default(1) @map("max_resubmits")
+  isMiniProject   Boolean  @default(false) @map("is_mini_project")
+  createdBy       String   @map("created_by")
+  createdAt       DateTime @default(now()) @map("created_at")
+  updatedAt       DateTime @updatedAt @map("updated_at")
+
+  module          Module?  @relation(fields: [moduleId], references: [id])
+  creator         User     @relation("AssignmentCreator", fields: [createdBy], references: [id])
+  submissions     Submission[]
+
+  @@map("assignments")
+}
+
+model Submission {
+  id             String           @id @default(uuid())
+  assignmentId   String           @map("assignment_id")
+  internId       String           @map("intern_id")
+  fileUrl        String?          @map("file_url")
+  content        String?
+  status         SubmissionStatus @default(SUBMITTED)
+  grade          Float?
+  feedback       String?
+  gradedBy       String?          @map("graded_by")
+  gradedAt       DateTime?        @map("graded_at")
+  resubmitCount  Int              @default(0) @map("resubmit_count")
+  submittedAt    DateTime         @default(now()) @map("submitted_at")
+  updatedAt      DateTime         @updatedAt @map("updated_at")
+
+  assignment     Assignment       @relation(fields: [assignmentId], references: [id], onDelete: Cascade)
+  intern         User             @relation("InternSubmissions", fields: [internId], references: [id])
+  grader         User?            @relation("SubmissionGrader", fields: [gradedBy], references: [id])
+
+  @@map("submissions")
 }
 
 // ─── Notifications ───────────────────────────────────

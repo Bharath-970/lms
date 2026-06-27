@@ -14,6 +14,7 @@ const accessRoutes = require('./routes/accessRoutes');
 const attendanceRoutes = require('./routes/attendanceRoutes');
 const standupRoutes = require('./routes/standupRoutes');
 const dailyTaskRoutes = require('./routes/dailyTaskRoutes');
+const assignmentRoutes = require('./routes/assignmentRoutes');
 
 const app = express();
 const PORT = process.env.PORT || 5000;
@@ -50,6 +51,9 @@ app.use('/api/access', accessRoutes);
 app.use('/api/attendance', attendanceRoutes);
 app.use('/api/standups', standupRoutes);
 app.use('/api/daily-tasks', dailyTaskRoutes);
+app.use('/api/assignments', assignmentRoutes);
+
+app.use('/uploads', require('express').static(require('path').join(__dirname, '../uploads')));
 
 app.get('/api/health', (req, res) => {
   res.json({ status: 'ok', timestamp: new Date().toISOString() });

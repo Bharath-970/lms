@@ -132,6 +132,39 @@ const updateTaskStatusSchema = z.object({
   status: z.enum(['PENDING', 'IN_PROGRESS', 'COMPLETED']),
 });
 
+const createAssignmentSchema = z.object({
+  moduleId: z.string().min(1).optional(),
+  title: z.string().min(1, 'Title required'),
+  description: z.string().min(1, 'Description required'),
+  rubricJson: z.any().optional(),
+  maxScore: z.number().int().min(1),
+  deadline: z.string().min(1, 'Deadline required'),
+  fileTypes: z.string().optional(),
+  maxFileSize: z.number().int().optional(),
+  allowResubmit: z.boolean().optional(),
+  maxResubmits: z.number().int().optional(),
+  isMiniProject: z.boolean().optional(),
+});
+
+const updateAssignmentSchema = z.object({
+  title: z.string().min(1).optional(),
+  description: z.string().min(1).optional(),
+  rubricJson: z.any().optional(),
+  maxScore: z.number().int().min(1).optional(),
+  deadline: z.string().optional(),
+  fileTypes: z.string().nullable().optional(),
+  maxFileSize: z.number().int().optional(),
+  allowResubmit: z.boolean().optional(),
+  maxResubmits: z.number().int().optional(),
+  isMiniProject: z.boolean().optional(),
+});
+
+const gradeSubmissionSchema = z.object({
+  grade: z.number().min(0).optional(),
+  feedback: z.string().min(1, 'Feedback required'),
+  requestResubmit: z.boolean().optional(),
+});
+
 module.exports = {
   loginSchema,
   changePasswordSchema,
@@ -151,4 +184,7 @@ module.exports = {
   submitStandupSchema,
   createDailyTaskSchema,
   updateTaskStatusSchema,
+  createAssignmentSchema,
+  updateAssignmentSchema,
+  gradeSubmissionSchema,
 };
